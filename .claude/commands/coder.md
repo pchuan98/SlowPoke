@@ -17,6 +17,7 @@ S2. FOR <STORY> IN <STORIES>:
 2. 当一个需求走不通或者有问题，你不应该犯 *RULE-1* 的错误，而是即使提醒然后告诉用户需求需要变更，并给出专业的变更建议
 3. 当一直写不对代码的时候，你需要使用 MCP `context7` 查询最新API的使用方法
 4. 任何时候都禁止读取 `4-functional-requirements.md` 和 `features.md` 文件
+5. 再更新和创建任何markdown的文档之前都需要询问当前是否需要，只有用户同意后才可以开始，默认不更新和创建
 
 ## YOU NEED KNOW
 
