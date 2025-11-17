@@ -1,0 +1,11 @@
+@SlowPoke.API_HostAddress = http://localhost:5299
+
+GET {{SlowPoke.API_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{SlowPoke.API_HostAddress}}/todos/1
+Accept: application/json
+
+###

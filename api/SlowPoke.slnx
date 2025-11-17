@@ -1,16 +1,3 @@
 <Solution>
-  <Folder Name="/_docs/">
-    <File Path="docs/brainstroming.md" />
-  </Folder>
-  <Folder Name="/_docs/prd/">
-    <File Path="docs/prd/1-产品概述.md" />
-    <File Path="docs/prd/2-核心目标.md" />
-    <File Path="docs/prd/3-技术架构.md" />
-    <File Path="docs/prd/4-功能需求.md" />
-    <File Path="docs/prd/5-数据模型.md" />
-    <File Path="docs/prd/6-api-设计.md" />
-    <File Path="docs/prd/7-用户界面.md" />
-    <File Path="docs/prd/8-非功能性需求.md" />
-    <File Path="docs/prd/9-开发计划.md" />
-  </Folder>
+  <Project Path="SlowPoke.API/SlowPoke.API.csproj" Id="971e6aad-9f3a-4f1c-b90e-ef1684674eb2" />
 </Solution>
