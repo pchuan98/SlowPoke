@@ -150,17 +150,34 @@ project: SlowPoke
 
 #### FR-2.3 更新 TODO
 
-**功能描述**: 修改现有 TODO 的任何字段
-
 **交互流程**:
-1. 用户点击 TODO 卡片进入编辑页
-2. 修改标题、状态、优先级、内容等
-3. 点击"保存"
-4. 后端同时更新：
-   - 数据库索引记录
-   - Markdown 文件内容
-   - 更新 `fileModifiedAt` 字段
-5. 返回列表，显示更新后的内容
+1. 点击 TODO 进入编辑页
+2. 修改标题、扩展字段、Markdown 内容
+3. 保存时同步更新数据库索引和 Markdown 文件
+
+**API 端点**: `PATCH /api/todos/{id}`
+
+**API 请求示例 - 只更新状态**:
+```json
+{
+  "fields": {
+    "status": "done"
+  }
+}
+```
+
+**API 请求示例 - 更新多个字段**:
+```json
+{
+  "fields": {
+    "status": "done",
+    "priority": "medium"
+  },
+  "content": "更新后的内容..."
+}
+```
+
+**API 响应**: 同读取详情接口
 
 #### FR-2.4 删除 TODO
 
