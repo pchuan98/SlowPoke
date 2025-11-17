@@ -32,8 +32,14 @@
 #### FR-2.1 创建 TODO
 
 **核心字段**:
-- `id` - GUID，自动生成
-- `title` - 标题，可选，为空时默认使用 id 作为标题
+- `id` - GUID，系统生成
+- `title` - 标题，可选，为空时默认使用 id
+
+**系统字段**（YAML中维护）:
+- `createdAt` - 创建时间，创建时生成
+- `updatedAt` - 最后修改时间，每次API更新时更新
+- `deleted` - 删除标记，仅删除时添加，值为 true
+- `deletedAt` - 删除时间，仅删除时添加
 
 **扩展字段**:
 - 用户可自定义任意 YAML Front Matter 字段
@@ -44,7 +50,7 @@
 
 **文件存储**:
 - 路径：`data/todos/{id}.md`
-- 创建时间、修改时间由文件系统提供
+- 文件系统的 modifiedAt 仅用于外部修改检测
 
 **交互流程**:
 1. 点击"新建 TODO"
@@ -53,11 +59,30 @@
 4. 可选：编辑 Markdown 内容
 5. 保存生成文件并写入数据库索引
 
-**Markdown 文件示例**:
+**Markdown 文件示例（未删除）**:
 ```markdown
 ---
 id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
 title: 实现 TODO 创建功能
+createdAt: 2025-11-17T10:00:00Z
+updatedAt: 2025-11-17T15:30:00Z
+status: in_progress
+priority: high
+project: SlowPoke
+---
+
+详细描述内容...
+```
+
+**Markdown 文件示例（已删除）**:
+```markdown
+---
+id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+title: 实现 TODO 创建功能
+createdAt: 2025-11-17T10:00:00Z
+updatedAt: 2025-11-17T15:30:00Z
+deleted: true
+deletedAt: 2025-11-17T16:00:00Z
 status: in_progress
 priority: high
 project: SlowPoke
@@ -102,7 +127,7 @@ project: SlowPoke
 - 返回完整数据
 
 **列表读取**:
-- 返回字段：id、title、fields（所有扩展字段）、文件时间
+- 返回字段：id、title、fields（所有扩展字段）、createdAt、updatedAt
 - 不返回 content（正文内容）
 - 支持过滤（基于扩展字段）
 - 支持分页
@@ -124,7 +149,7 @@ project: SlowPoke
   },
   "content": "详细描述...",
   "createdAt": "2025-11-17T10:00:00Z",
-  "modifiedAt": "2025-11-17T12:00:00Z"
+  "updatedAt": "2025-11-17T12:00:00Z"
 }
 ```
 
@@ -142,7 +167,7 @@ project: SlowPoke
         "project": "SlowPoke"
       },
       "createdAt": "2025-11-17T10:00:00Z",
-      "modifiedAt": "2025-11-17T12:00:00Z"
+      "updatedAt": "2025-11-17T12:00:00Z"
     }
   ]
 }
@@ -212,7 +237,7 @@ project: SlowPoke
 
 **基础展示**:
 - title（标题）
-- createdAt（文件创建时间）
+- createdAt（创建时间）
 - 操作按钮：编辑、删除
 
 **扩展字段显示**:
@@ -222,8 +247,8 @@ project: SlowPoke
 - 其他扩展字段可选择性显示
 
 **排序**:
-- 默认按文件创建时间降序
-- 支持按文件修改时间排序
+- 默认按 createdAt 降序
+- 支持按 updatedAt 排序
 
 **交互**:
 - 点击 TODO 卡片进入编辑页
