@@ -32,53 +32,66 @@
 
 #### FR-2.1 创建 TODO
 
-**功能描述**: 创建一个新的 TODO 任务
+**核心字段**:
+- `id` - GUID，自动生成
+- `title` - 标题，可选，为空时默认使用 id 作为标题
 
-**固定属性**:
+**扩展字段**:
+- 用户可自定义任意 YAML Front Matter 字段
+- 常见示例：status、priority、project、tags、dueDate 等
 
-| 字段             | 类型     | 必填 | 默认值       | 说明                                        |
-| ---------------- | -------- | ---- | ------------ | ------------------------------------------- |
-| `id`             | GUID     | 是   | 自动生成     | 唯一标识                                    |
-| `title`          | String   | 是   | -            | 标题（最大 200 字符）                       |
-| `content`        | Markdown | 否   | 空           | 详细描述                                    |
-| `status`         | Enum     | 是   | `todo`       | 状态：`todo`/`in_progress`/`done`/`blocked` |
-| `priority`       | Enum     | 是   | `medium`     | 优先级：`low`/`medium`/`high`/`urgent`      |
-| `createdAt`      | DateTime | 是   | 当前时间     | 创建时间（UTC）                             |
-| `completedAt`    | DateTime | 否   | null         | 完成时间（UTC）                             |
-| `projectId`      | GUID     | 否   | null         | 所属项目 ID                                 |
-| `fileModifiedAt` | DateTime | 是   | 文件修改时间 | 文件同步验证字段                            |
+**Markdown 内容**:
+- YAML Front Matter 之后的正文
+
+**文件存储**:
+- 路径：`data/todos/{id}.md`
+- 创建时间、修改时间由文件系统提供
 
 **交互流程**:
-1. 用户点击"新建 TODO"按钮
-2. 弹出编辑对话框（或跳转编辑页）
-3. 用户填写标题、选择优先级、选择项目（可选）
-4. 用户在 Markdown 编辑器中填写内容
-5. 点击"保存"
-6. 后端创建数据库记录 + 生成 Markdown 文件
-7. 返回 TODO 列表，显示新建的 TODO
+1. 点击"新建 TODO"
+2. 填写标题（可选，为空则使用 id）
+3. 可选：添加扩展字段
+4. 可选：编辑 Markdown 内容
+5. 保存生成文件并写入数据库索引
 
-**Markdown 文件格式**:
-
+**Markdown 文件示例**:
 ```markdown
 ---
 id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
 title: 实现 TODO 创建功能
 status: in_progress
 priority: high
-createdAt: 2025-11-16T10:30:00Z
-completedAt: null
-projectId: 1a2b3c4d-5678-90ab-cdef-1234567890ab
+project: SlowPoke
 ---
 
-这里是详细描述内容，支持 Markdown 格式。
+详细描述内容...
+```
 
-## 任务清单
-- [x] 设计数据库表结构
-- [ ] 实现后端 API
-- [ ] 实现前端界面
+**API 请求**:
+```json
+{
+  "title": "实现 TODO 创建功能",
+  "fields": {
+    "status": "in_progress",
+    "priority": "high",
+    "project": "SlowPoke"
+  },
+  "content": "详细描述..."
+}
+```
 
-**相关资料**:
-- [参考文档](https://example.com)
+**API 响应**:
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "title": "实现 TODO 创建功能",
+  "fields": {
+    "status": "in_progress",
+    "priority": "high",
+    "project": "SlowPoke"
+  },
+  "content": "详细描述..."
+}
 ```
 
 #### FR-2.2 读取 TODO
