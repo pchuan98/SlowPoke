@@ -95,22 +95,57 @@ project: SlowPoke
 
 #### FR-2.2 读取 TODO
 
-**功能描述**: 查询和展示 TODO
+**单个读取**:
+- 根据 id 查询数据库索引
+- 读取对应 Markdown 文件
+- 解析 YAML Front Matter 和正文内容
+- 返回完整数据
 
-**API 端点**:
-- `GET /api/todos` - 获取 TODO 列表（支持过滤）
-- `GET /api/todos/{id}` - 获取单个 TODO 详情
+**列表读取**:
+- 返回字段：id、title、fields（所有扩展字段）、文件时间
+- 不返回 content（正文内容）
+- 支持过滤（基于扩展字段）
+- 支持分页
+- 支持排序
 
-**文件同步逻辑**:
-```csharp
-1. 从数据库查询 TODO 索引记录
-2. 检查文件修改时间：
-   - 如果 file.LastWriteTimeUtc == index.FileModifiedAt
-     → 数据一致，直接返回数据库数据
-   - 如果不一致
-     → 文件被外部修改，重新解析 Markdown 文件
-     → 更新数据库索引
-     → 返回最新数据
+**文件同步**:
+- 对比数据库记录的文件修改时间与实际文件修改时间
+- 若不一致，重新解析文件并更新数据库索引
+
+**API 响应 - 单个详情**:
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "title": "实现 TODO 创建功能",
+  "fields": {
+    "status": "in_progress",
+    "priority": "high",
+    "project": "SlowPoke"
+  },
+  "content": "详细描述...",
+  "createdAt": "2025-11-17T10:00:00Z",
+  "modifiedAt": "2025-11-17T12:00:00Z"
+}
+```
+
+**API 响应 - 列表**:
+```json
+{
+  "total": 100,
+  "items": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "实现 TODO 创建功能",
+      "fields": {
+        "status": "in_progress",
+        "priority": "high",
+        "project": "SlowPoke"
+      },
+      "createdAt": "2025-11-17T10:00:00Z",
+      "modifiedAt": "2025-11-17T12:00:00Z"
+    }
+  ]
+}
 ```
 
 #### FR-2.3 更新 TODO
