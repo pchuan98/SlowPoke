@@ -209,8 +209,8 @@ project: SlowPoke
 **删除方式**: 软删除
 
 **系统字段**:
-- `deleted` - 布尔值，默认 false
-- `deletedAt` - 删除时间，默认 null
+- `deleted` - 删除时添加到YAML，值为 true
+- `deletedAt` - 删除时添加到YAML，记录删除时间
 
 **交互流程**:
 1. 点击"删除"按钮
@@ -265,8 +265,6 @@ project: SlowPoke
 
 ### 项目管理
 
-#### 项目概念
-
 **设计理念**: 项目本质上也是一个 TODO，但：
 - 存储在单独的目录 `data/projects/`
 - 有特殊的类型标识字段 `type: project`
@@ -293,7 +291,9 @@ project: SlowPoke
 - 点击列头可排序
 - 支持多列筛选（顶部过滤栏）
 
-#### FR-4.3 Kanban 视图
+---
+
+### Kanban 视图
 
 **功能描述**: 看板展示，支持拖拽改变状态
 
@@ -313,7 +313,9 @@ project: SlowPoke
 - 卡片显示标题、优先级、项目名称
 - 高优先级卡片高亮显示
 
-#### FR-4.4 Timeline 视图
+---
+
+### Timeline 视图
 
 **功能描述**: 时间线展示，按时间顺序排列
 
@@ -328,9 +330,9 @@ project: SlowPoke
 
 ---
 
-### 4.5 过滤与筛选
+### 过滤与筛选
 
-#### FR-5.1 过滤条件
+#### 过滤条件
 
 **支持的过滤维度**:
 | 过滤器   | 类型 | 选项                                |
@@ -346,7 +348,7 @@ project: SlowPoke
 - 同一维度的多选是 **OR** 关系
 - 示例：状态=`todo` OR `in_progress` AND 项目=`SlowPoke` AND 优先级=`high`
 
-#### FR-5.2 过滤栏 UI
+#### 过滤栏 UI
 
 **位置**: 页面顶部，所有视图共享
 
@@ -358,9 +360,7 @@ project: SlowPoke
 
 ---
 
-### 4.6 分享功能（MVP 简化版）
-
-#### FR-6.1 分享 URL
+### 分享功能
 
 **功能描述**: 生成一个只读的分享链接，展示过滤后的 TODO
 
@@ -374,14 +374,12 @@ project: SlowPoke
 
 **分享链接属性**:
 - 只读（不能编辑、删除）
-- 永久有效（MVP 不支持过期时间）
+- 永久有效（不支持过期时间）
 - 可以撤销（删除 Token 记录）
 
 ---
 
-### 4.7 数据库重建功能
-
-#### FR-7.1 从 Markdown 文件重建索引
+### 数据库重建功能
 
 **功能描述**: 扫描所有 Markdown 文件，重新生成数据库索引
 
@@ -396,8 +394,8 @@ project: SlowPoke
 3. 用户确认
 4. 后端执行：
    - 清空数据库所有表
-   - 扫描 `data/todos/` 和 `data/projects/` 目录
+   - 扫描 `data/todos/` 目录
    - 解析每个 `.md` 文件的 YAML Front Matter
    - 插入数据库
    - 更新 `fileModifiedAt` 为文件当前修改时间
-5. 完成后显示："成功重建 X 条 TODO，Y 个项目"
+5. 完成后显示："成功重建 X 条 TODO"
